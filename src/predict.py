@@ -1,22 +1,15 @@
-class Predictor:
-    def __init__(self, filename='theta'):
-        self.filename = filename
-        self.theta1, self.theta0 = self.read_theta()
+from model import Model
 
-    def make_prediction(self, x):
-        return x * self.theta1 + self.theta0
-
-    def read_theta(self):
+def predict_input(m):
+    while True:
         try:
-            with open(self.filename, 'r') as file:
-                strs = file.read().strip().split(",")
-                if len(strs) != 2:
-                    raise "wrong theta file format"
-                return int(strs[0]), int(strs[1])
-        except IOError:
-            print(self.filename, "do not exist")
+            x = int(input("Enter a mileage: "))
+        except ValueError:
+            print("Bad input, you should enter a number")
+        else:
+            break
+    print("The predicted price for this mileage is", m.hypothesis(x))
 
 if __name__ == "__main__":
-    p = Predictor()
-    x = int(input("Enter a mileage: "))
-    print("The predicted price for this mileage is", p.make_prediction(x))
+    m = Model(thetafilename="./theta")
+    predict_input(m)
