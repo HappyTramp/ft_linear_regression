@@ -2,6 +2,8 @@
 
 ft\_linear\_regression project of school 42
 
+![screenshot](./screenshot.png)
+
 ## Usage
 
 ```
