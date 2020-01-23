@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.7
+
 from model import Model
 
 def predict_input(m):
@@ -8,7 +10,7 @@ def predict_input(m):
             print("Bad input, you should enter a number")
         else:
             break
-    print("The predicted price for this mileage is", m.hypothesis(x))
+    print("The predicted price for this mileage is", m.make_prediction(x))
 
 if __name__ == "__main__":
     m = Model(thetafilename="./theta")

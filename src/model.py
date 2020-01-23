@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import sklearn.preprocessing
 
 
 class Model:
@@ -25,6 +24,10 @@ class Model:
     def hypothesis(self, x):
         return x * self.theta1 + self.theta0
 
+    def make_prediction(self, predict):
+        predict = (predict - self.xs.min()) / (self.xs.max() - self.xs.min())
+        return self.hypothesis(predict)
+
     def cost(self):
         return (1 / (2 * len(self.xs))) * sum([(self.hypothesis(x) - y) ** 2
                                                for x, y in zip(self.xs, self.ys)])
@@ -42,8 +45,8 @@ class Model:
 
     def _plot_model(self):
         line_xs = [self.xs.min(), self.xs.max()]
-        line_ys = [self.hypothesis(x) for x in line_xs]
-        self.ax.plot(line_xs, line_ys)
+        line_ys = [self.make_prediction(x) for x in line_xs]
+        self.ax.plot(line_xs, line_ys, color='r')
 
     def _partial_theta1(self):
         return sum([(self.hypothesis(x) - y) * x
@@ -54,7 +57,7 @@ class Model:
                     for x, y in zip(self.xs, self.ys)]) / len(self.xs)
 
     def _normalize_data(self):
-        self.xs, self.ys = sklearn.preprocessing.normalize([self.xs, self.ys])
+        self.xs  = (self.xs - self.xs.min()) / (self.xs.max() - self.xs.min())
 
     def _read_theta(self):
         try:
@@ -72,9 +75,3 @@ class Model:
             return data[:, 0], data[:, 1]
         except IOError:
             print(self.datafilename, "do not exist")
-
-
-if __name__ == "__main__":
-    m = Model()
-    m.train()
-    m.write_theta()
